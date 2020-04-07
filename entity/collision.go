@@ -1,7 +1,7 @@
 package entity
 
 import (
-	"raytracer/geometry"
+	"github.com/benfrisbie/raytracer/geometry"
 )
 
 // Collision represents a Ray colliding with a Renderable in 3D space

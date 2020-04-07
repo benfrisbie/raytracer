@@ -3,7 +3,7 @@ package entity
 import (
 	"fmt"
 	"math"
-	"raytracer/geometry"
+	"github.com/benfrisbie/raytracer/geometry"
 )
 
 type Sphere struct {

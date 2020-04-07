@@ -1,7 +1,7 @@
 package scene
 
 import (
-	"raytracer/entity"
+	"github.com/benfrisbie/raytracer/entity"
 )
 
 type Scene interface {

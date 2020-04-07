@@ -2,9 +2,9 @@ package scene
 
 import (
 	"image/color"
-	"raytracer/entity"
-	"raytracer/geometry"
-	"raytracer/material"
+	"github.com/benfrisbie/raytracer/entity"
+	"github.com/benfrisbie/raytracer/geometry"
+	"github.com/benfrisbie/raytracer/material"
 )
 
 type Scene1 struct {

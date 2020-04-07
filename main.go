@@ -10,10 +10,10 @@ import (
 	"math"
 	"math/rand"
 	"os"
-	"raytracer/entity"
-	"raytracer/geometry"
-	"raytracer/material"
-	"raytracer/scene"
+	"github.com/benfrisbie/raytracer/entity"
+	"github.com/benfrisbie/raytracer/geometry"
+	"github.com/benfrisbie/raytracer/material"
+	"github.com/benfrisbie/raytracer/scene"
 	"sync"
 	"time"
 
@@ -49,7 +49,7 @@ func main() {
 	startTime := time.Now()
 	data := image.NewNRGBA(image.Rect(0, 0, width, height))
 
-	// Determine color of each pixel
+	// Determine color of each pixe
 	var wg sync.WaitGroup
 	wg.Add(width * height)
 	progressBar := pb.StartNew(width * height)

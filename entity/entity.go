@@ -1,7 +1,7 @@
 package entity
 
 import (
-	"raytracer/geometry"
+	"github.com/benfrisbie/raytracer/geometry"
 )
 
 // Entity represents an object in 3D space

@@ -1,7 +1,7 @@
 package entity
 
 import (
-	"raytracer/material"
+	"github.com/benfrisbie/raytracer/material"
 )
 
 type Renderable struct {

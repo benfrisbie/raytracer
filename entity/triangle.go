@@ -2,8 +2,8 @@ package entity
 
 import (
 	"fmt"
-	"raytracer/geometry"
-	"raytracer/material"
+	"github.com/benfrisbie/raytracer/geometry"
+	"github.com/benfrisbie/raytracer/material"
 )
 
 const EPSILON = 0.000000001
