@@ -25,12 +25,12 @@ type Collision struct {
 func ClosestCollision(ray geometry.Ray, renderables []Renderable) *Collision {
 	var closest *Collision = nil
 	for _, rend := range renderables {
-		t := rend.Shape.CheckForCollision(ray)
-		if t != nil && (closest == nil || *t < closest.T) {
+		s, t := rend.Shape.CheckForCollision(ray)
+		if s != nil && (closest == nil || t < closest.T) {
 			closest = &Collision{}
-			closest.T = *t
+			closest.T = t
 			closest.Renderable = rend
-			closest.shape = rend.Shape
+			closest.shape = s
 		}
 	}
 	if closest != nil {

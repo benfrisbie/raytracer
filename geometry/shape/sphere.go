@@ -17,7 +17,7 @@ func (sphere Sphere) String() string {
 	return fmt.Sprintf("Sphere(%v, %v)", sphere.Center, sphere.Radius)
 }
 
-func (sphere Sphere) CheckForCollision(ray geometry.Ray) *float64 {
+func (sphere Sphere) CheckForCollision(ray geometry.Ray) (Shape, float64) {
 	cToE := sphere.Center.VectorTo(ray.Origin)
 	a := ray.Direction.Dot(cToE)
 	b := ray.Direction.Dot(ray.Direction)
@@ -25,21 +25,21 @@ func (sphere Sphere) CheckForCollision(ray geometry.Ray) *float64 {
 
 	if discrim == 0 {
 		t := -a / b
-		return &t
+		return sphere, t
 	} else if discrim > 0 {
 		root := math.Sqrt(discrim)
 		t := (-a - root) / b
 		if t >= 0 {
-			return &t
+			return sphere, t
 		}
 
 		t = (-a + root) / b
 		if t >= 0 {
-			return &t
+			return sphere, t
 		}
 	}
 
-	return nil
+	return nil, 0
 }
 
 func (s Sphere) NormalAtLocation(loc geometry.Vector) geometry.Vector {

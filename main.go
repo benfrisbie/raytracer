@@ -15,19 +15,19 @@ import (
 func main() {
 	var width int
 	var height int
-	var antialias int
+	var msaa int
 	var fov float64
 	var output string
 	flag.IntVar(&width, "width", 1920, "width of the image")
 	flag.IntVar(&height, "height", 1080, "height of the image")
 	flag.Float64Var(&fov, "fov", 90, "field of view of the camera")
-	flag.IntVar(&antialias, "antialias", 4, "antialias sets how many rays per pixel should be shot into the scene. increasing this improves quality around edges and the expense of performance")
+	flag.IntVar(&msaa, "msaa", 4, "multisample anti-alias sets how many samples/rays per pixel should be used. increasing this improves quality around edges at the expense of performance")
 	flag.StringVar(&output, "output", "test.png", "name of the output png file")
 	flag.Parse()
 
 	// Setup camera
 	fmt.Println("Setting up camera...")
-	cam := camera.NewCamera(width, height, antialias, fov)
+	cam := camera.NewCamera(width, height, msaa, fov)
 
 	// Setup scene
 	fmt.Println("Setting up scene...")

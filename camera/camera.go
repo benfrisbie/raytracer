@@ -12,7 +12,7 @@ import (
 	"github.com/benfrisbie/raytracer/geometry/shape"
 	"github.com/benfrisbie/raytracer/material"
 	"github.com/benfrisbie/raytracer/scene"
-	"github.com/cheggaaa/pb"
+	"github.com/cheggaaa/pb/v3"
 )
 
 type Camera struct {
@@ -23,15 +23,15 @@ type Camera struct {
 	heightFloat float64
 	aspectRatio float64
 
-	fov       float64
-	scale     float64
-	antialias int
-	location  geometry.Vector
+	fov      float64
+	scale    float64
+	msaa     int
+	location geometry.Vector
 
 	scene scene.Scene
 }
 
-func NewCamera(width int, height int, antialias int, fov float64) *Camera {
+func NewCamera(width int, height int, msaa int, fov float64) *Camera {
 	c := Camera{}
 
 	c.location = geometry.Vector{X: 0, Y: 0, Z: 0}
@@ -41,7 +41,7 @@ func NewCamera(width int, height int, antialias int, fov float64) *Camera {
 	c.heightFloat = float64(c.height)
 	c.aspectRatio = c.widthFloat / c.heightFloat
 	c.image = image.NewNRGBA(image.Rect(0, 0, c.width, c.height))
-	c.antialias = antialias
+	c.msaa = msaa
 	c.fov = fov
 	c.scale = math.Tan(0.5 * c.fov * math.Pi / 180)
 
@@ -71,7 +71,7 @@ func (c *Camera) RenderSceneToImage(scene scene.Scene) *image.NRGBA {
 func (c Camera) calculatePixel(x int, y int, wg *sync.WaitGroup, progressBar *pb.ProgressBar) {
 	var cm material.ColorMixer
 
-	for i := 0; i < c.antialias; i++ {
+	for i := 0; i < c.msaa; i++ {
 		pixelPos := geometry.Vector{}
 		pixelPos.Z = -1
 		pixelPos.X = (2*(float64(x)+rand.Float64())/c.widthFloat - 1) * c.aspectRatio * c.scale

@@ -62,9 +62,9 @@ func NewScene() *Scene1 {
 		geometry.Vector{X: 10, Y: 10, Z: -20},
 		geometry.Vector{X: 10, Y: -10, Z: -20},
 		geometry.Vector{X: -10, Y: -10, Z: -20}}
-	s = shape.NewRectangle(vertices4)
-	whiteMatte := material.Matte{Color: color.NRGBA{R: 255, G: 255, B: 255, A: 255}}
-	r = renderable.Renderable{Shape: s, Material: whiteMatte}
+	s = shape.NewQuadrilateral(vertices4)
+	m = material.Matte{Color: color.NRGBA{R: 220, G: 220, B: 220, A: 255}}
+	r = renderable.Renderable{Shape: s, Material: m}
 	scene.Renderables = append(scene.Renderables, r)
 
 	// white floor
@@ -73,8 +73,8 @@ func NewScene() *Scene1 {
 		geometry.Vector{X: 10, Y: -10, Z: -20},
 		geometry.Vector{X: 10, Y: -10, Z: -10},
 		geometry.Vector{X: -10, Y: -10, Z: -10}}
-	s = shape.NewRectangle(vertices4)
-	r = renderable.Renderable{Shape: s, Material: whiteMatte}
+	s = shape.NewQuadrilateral(vertices4)
+	r = renderable.Renderable{Shape: s, Material: m}
 	scene.Renderables = append(scene.Renderables, r)
 
 	// white ceiling
@@ -83,8 +83,8 @@ func NewScene() *Scene1 {
 		geometry.Vector{X: 10, Y: 10, Z: -20},
 		geometry.Vector{X: 10, Y: 10, Z: -10},
 		geometry.Vector{X: -10, Y: 10, Z: -10}}
-	s = shape.NewRectangle(vertices4)
-	r = renderable.Renderable{Shape: s, Material: whiteMatte}
+	s = shape.NewQuadrilateral(vertices4)
+	r = renderable.Renderable{Shape: s, Material: m}
 	scene.Renderables = append(scene.Renderables, r)
 
 	// red left wall
@@ -93,8 +93,8 @@ func NewScene() *Scene1 {
 		geometry.Vector{X: -10, Y: 10, Z: -20},
 		geometry.Vector{X: -10, Y: -10, Z: -20},
 		geometry.Vector{X: -10, Y: -10, Z: -10}}
-	s = shape.NewRectangle(vertices4)
-	m = material.Matte{Color: color.NRGBA{R: 231, G: 76, B: 60, A: 255}}
+	s = shape.NewQuadrilateral(vertices4)
+	m = material.Matte{Color: color.NRGBA{R: 230, G: 60, B: 30, A: 255}}
 	r = renderable.Renderable{Shape: s, Material: m}
 	scene.Renderables = append(scene.Renderables, r)
 
@@ -104,8 +104,8 @@ func NewScene() *Scene1 {
 		geometry.Vector{X: 10, Y: 10, Z: -20},
 		geometry.Vector{X: 10, Y: -10, Z: -20},
 		geometry.Vector{X: 10, Y: -10, Z: -10}}
-	s = shape.NewRectangle(vertices4)
-	m = material.Matte{Color: color.NRGBA{R: 5, G: 255, B: 60, A: 255}}
+	s = shape.NewQuadrilateral(vertices4)
+	m = material.Matte{Color: color.NRGBA{R: 0, G: 120, B: 40, A: 255}}
 	r = renderable.Renderable{Shape: s, Material: m}
 	scene.Renderables = append(scene.Renderables, r)
 
@@ -115,7 +115,7 @@ func NewScene() *Scene1 {
 	// 	geometry.Vector{X: 2, Y: 9.9, Z: -17},
 	// 	geometry.Vector{X: 2, Y: 9.9, Z: -13},
 	// 	geometry.Vector{X: -2, Y: 9.9, Z: -13}}
-	// s = shape.NewRectangle(vertices4)
+	// s = shape.NewQuadrilateral(vertices4)
 	// m = material.Light{Color: color.NRGBA{R: 255, G: 255, B: 0, A: 255}}
 	// r = renderable.Renderable{Shape: s, Material: m}
 	// scene.Renderables = append(scene.Renderables, r)

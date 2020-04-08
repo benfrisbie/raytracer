@@ -5,11 +5,9 @@ import (
 )
 
 // Shape represents a shape in 3D space
-//
-// CheckForCollision determines if a Ray collides with this shape
-//
-// NormalAtLocation calculates the normal vector at a given location on this shape
 type Shape interface {
-	CheckForCollision(ray geometry.Ray) *float64
+	// CheckForCollision determines if a Ray collides with this shape
+	CheckForCollision(ray geometry.Ray) (Shape, float64)
+	// NormalAtLocation calculates the normal vector at a given location on this shape
 	NormalAtLocation(loc geometry.Vector) geometry.Vector
 }
