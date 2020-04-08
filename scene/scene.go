@@ -1,10 +1,10 @@
 package scene
 
-import "github.com/benfrisbie/raytracer/entity"
+import "github.com/benfrisbie/raytracer/geometry/renderable"
 
 type Scene interface {
 	NewScene() *Scene
-	GetRenderables() []entity.Renderable
-	GetRenderablesNoLights() []entity.Renderable
-	GetLights() []entity.Renderable
+	GetRenderables() []renderable.Renderable
+	GetRenderablesNoLights() []renderable.Renderable
+	GetLights() []renderable.Renderable
 }

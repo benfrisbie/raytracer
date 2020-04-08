@@ -3,175 +3,129 @@ package scene
 import (
 	"image/color"
 
-	"github.com/benfrisbie/raytracer/entity"
 	"github.com/benfrisbie/raytracer/geometry"
+	"github.com/benfrisbie/raytracer/geometry/renderable"
+	"github.com/benfrisbie/raytracer/geometry/shape"
 	"github.com/benfrisbie/raytracer/material"
 )
 
 type Scene1 struct {
 	Scene
-	Renderables         []entity.Renderable
-	RenderablesNoLights []entity.Renderable
-	Lights              []entity.Renderable
+	Renderables         []renderable.Renderable
+	RenderablesNoLights []renderable.Renderable
+	Lights              []renderable.Renderable
 }
 
-func (s Scene1) GetRenderables() []entity.Renderable {
+func (s Scene1) GetRenderables() []renderable.Renderable {
 	return s.Renderables
 }
 
-func (s Scene1) GetRenderablesNoLights() []entity.Renderable {
+func (s Scene1) GetRenderablesNoLights() []renderable.Renderable {
 	return s.RenderablesNoLights
 }
 
-func (s Scene1) GetLights() []entity.Renderable {
+func (s Scene1) GetLights() []renderable.Renderable {
 	return s.Lights
 }
 
 func NewScene() *Scene1 {
 	var scene Scene1 = Scene1{}
 
-	var e entity.Entity
+	var s shape.Shape
 	var m material.Material
 
 	// Spheres
-	center := geometry.Vector{X: -1, Y: -1, Z: -8}
-	radius := 1.0
-	e = entity.Sphere{Center: center, Radius: radius}
+	center := geometry.Vector{X: 0, Y: -7, Z: -15}
+	radius := 3.0
+	s = shape.Sphere{Center: center, Radius: radius}
 	m = material.Matte{Color: color.NRGBA{R: 0, G: 0, B: 255, A: 255}}
-	renderable := entity.Renderable{Entity: e, Material: m}
-	scene.Renderables = append(scene.Renderables, renderable)
+	r := renderable.Renderable{Shape: s, Material: m}
+	scene.Renderables = append(scene.Renderables, r)
 
-	center = geometry.Vector{X: 1, Y: -1, Z: -7}
-	radius = 1.0
-	e = entity.Sphere{Center: center, Radius: radius}
-	m = material.Matte{Color: color.NRGBA{R: 0, G: 255, B: 0, A: 255}}
-	renderable = entity.Renderable{Entity: e, Material: m}
-	scene.Renderables = append(scene.Renderables, renderable)
+	// center = geometry.Vector{X: 1, Y: -1, Z: -7}
+	// radius = 1.0
+	// s = shape.Sphere{Center: center, Radius: radius}
+	// m = material.Matte{Color: color.NRGBA{R: 0, G: 255, B: 0, A: 255}}
+	// r = renderable.Renderable{Shape: s, Material: m}
+	// scene.Renderables = append(scene.Renderables, r)
 
-	center = geometry.Vector{X: 1, Y: 0.5, Z: -6}
-	radius = 0.4
-	e = entity.Sphere{Center: center, Radius: radius}
-	m = material.Matte{Color: color.NRGBA{R: 255, G: 0, B: 0, A: 255}}
-	renderable = entity.Renderable{Entity: e, Material: m}
-	scene.Renderables = append(scene.Renderables, renderable)
+	// center = geometry.Vector{X: 1, Y: 0.5, Z: -6}
+	// radius = 0.4
+	// s = shape.Sphere{Center: center, Radius: radius}
+	// m = material.Matte{Color: color.NRGBA{R: 255, G: 0, B: 0, A: 255}}
+	// r = renderable.Renderable{Shape: s, Material: m}
+	// scene.Renderables = append(scene.Renderables, r)
 
-	// Triangles
-	// back wall
-	vertices := [3]geometry.Vector{
-		geometry.Vector{X: -10, Y: -2, Z: -10},
-		geometry.Vector{X: 10, Y: -2, Z: -10},
-		geometry.Vector{X: -10, Y: 2, Z: -10}}
-	e = entity.Triangle{Vertices: vertices}
-	m = material.Matte{Color: color.NRGBA{R: 128, G: 0, B: 128, A: 255}}
-	renderable = entity.Renderable{Entity: e, Material: m}
-	scene.Renderables = append(scene.Renderables, renderable)
+	// white back wall
+	vertices4 := [4]geometry.Vector{
+		geometry.Vector{X: -10, Y: 10, Z: -20},
+		geometry.Vector{X: 10, Y: 10, Z: -20},
+		geometry.Vector{X: 10, Y: -10, Z: -20},
+		geometry.Vector{X: -10, Y: -10, Z: -20}}
+	s = shape.NewRectangle(vertices4)
+	whiteMatte := material.Matte{Color: color.NRGBA{R: 255, G: 255, B: 255, A: 255}}
+	r = renderable.Renderable{Shape: s, Material: whiteMatte}
+	scene.Renderables = append(scene.Renderables, r)
 
-	vertices = [3]geometry.Vector{
-		geometry.Vector{X: 2.5, Y: -2, Z: -10},
-		geometry.Vector{X: 2.5, Y: 2, Z: -10},
-		geometry.Vector{X: -2.5, Y: 2, Z: -10}}
-	e = entity.Triangle{Vertices: vertices}
-	m = material.Matte{Color: color.NRGBA{R: 128, G: 0, B: 128, A: 255}}
-	renderable = entity.Renderable{Entity: e, Material: m}
-	scene.Renderables = append(scene.Renderables, renderable)
+	// white floor
+	vertices4 = [4]geometry.Vector{
+		geometry.Vector{X: -10, Y: -10, Z: -20},
+		geometry.Vector{X: 10, Y: -10, Z: -20},
+		geometry.Vector{X: 10, Y: -10, Z: -10},
+		geometry.Vector{X: -10, Y: -10, Z: -10}}
+	s = shape.NewRectangle(vertices4)
+	r = renderable.Renderable{Shape: s, Material: whiteMatte}
+	scene.Renderables = append(scene.Renderables, r)
 
-	// // floor
-	// vertices = [3]geometry.Vector{
-	// 	geometry.Vector{X: -2.5, Y: -2, Z: -2},
-	// 	geometry.Vector{X: 2.5, Y: -2, Z: -2},
-	// 	geometry.Vector{X: 2.5, Y: -2, Z: -10}}
-	// e = entity.Triangle{Vertices: vertices}
-	// m = material.Matte{Color: color.NRGBA{R: 255, G: 255, B: 255, A: 255}}
-	// renderable = entity.Renderable{Entity: e, Material: m}
-	// scene.Renderables = append(scene.Renderables, renderable)
+	// white ceiling
+	vertices4 = [4]geometry.Vector{
+		geometry.Vector{X: -10, Y: 10, Z: -20},
+		geometry.Vector{X: 10, Y: 10, Z: -20},
+		geometry.Vector{X: 10, Y: 10, Z: -10},
+		geometry.Vector{X: -10, Y: 10, Z: -10}}
+	s = shape.NewRectangle(vertices4)
+	r = renderable.Renderable{Shape: s, Material: whiteMatte}
+	scene.Renderables = append(scene.Renderables, r)
 
-	// vertices = [3]geometry.Vector{
-	// 	geometry.Vector{X: -2.5, Y: -2, Z: -2},
-	// 	geometry.Vector{X: 2.5, Y: -2, Z: -10},
-	// 	geometry.Vector{X: -2.5, Y: -2, Z: -10}}
-	// e = entity.Triangle{Vertices: vertices}
-	// m = material.Matte{Color: color.NRGBA{R: 255, G: 255, B: 255, A: 255}}
-	// renderable = entity.Renderable{Entity: e, Material: m}
-	// scene.Renderables = append(scene.Renderables, renderable)
+	// red left wall
+	vertices4 = [4]geometry.Vector{
+		geometry.Vector{X: -10, Y: 10, Z: -10},
+		geometry.Vector{X: -10, Y: 10, Z: -20},
+		geometry.Vector{X: -10, Y: -10, Z: -20},
+		geometry.Vector{X: -10, Y: -10, Z: -10}}
+	s = shape.NewRectangle(vertices4)
+	m = material.Matte{Color: color.NRGBA{R: 231, G: 76, B: 60, A: 255}}
+	r = renderable.Renderable{Shape: s, Material: m}
+	scene.Renderables = append(scene.Renderables, r)
 
-	// // ceiling
-	// vertices = [3]geometry.Vector{
-	// 	geometry.Vector{X: -2.5, Y: 2, Z: -2},
-	// 	geometry.Vector{X: 2.5, Y: 2, Z: -2},
-	// 	geometry.Vector{X: 2.5, Y: 2, Z: -10}}
-	// e = entity.Triangle{Vertices: vertices}
-	// m = material.Matte{Color: color.NRGBA{R: 255, G: 255, B: 255, A: 255}}
-	// renderable = entity.Renderable{Entity: e, Material: m}
-	// scene.Renderables = append(scene.Renderables, renderable)
+	// green right wall
+	vertices4 = [4]geometry.Vector{
+		geometry.Vector{X: 10, Y: 10, Z: -10},
+		geometry.Vector{X: 10, Y: 10, Z: -20},
+		geometry.Vector{X: 10, Y: -10, Z: -20},
+		geometry.Vector{X: 10, Y: -10, Z: -10}}
+	s = shape.NewRectangle(vertices4)
+	m = material.Matte{Color: color.NRGBA{R: 5, G: 255, B: 60, A: 255}}
+	r = renderable.Renderable{Shape: s, Material: m}
+	scene.Renderables = append(scene.Renderables, r)
 
-	// vertices = [3]geometry.Vector{
-	// 	geometry.Vector{X: -2.5, Y: 2, Z: -2},
-	// 	geometry.Vector{X: 2.5, Y: 2, Z: -10},
-	// 	geometry.Vector{X: -2.5, Y: 2, Z: -10}}
-	// e = entity.Triangle{Vertices: vertices}
-	// m = material.Matte{Color: color.NRGBA{R: 255, G: 255, B: 255, A: 255}}
-	// renderable = entity.Renderable{Entity: e, Material: m}
-	// scene.Renderables = append(scene.Renderables, renderable)
+	// yellow ceiling light
+	// vertices4 = [4]geometry.Vector{
+	// 	geometry.Vector{X: -2, Y: 9.9, Z: -17},
+	// 	geometry.Vector{X: 2, Y: 9.9, Z: -17},
+	// 	geometry.Vector{X: 2, Y: 9.9, Z: -13},
+	// 	geometry.Vector{X: -2, Y: 9.9, Z: -13}}
+	// s = shape.NewRectangle(vertices4)
+	// m = material.Light{Color: color.NRGBA{R: 255, G: 255, B: 0, A: 255}}
+	// r = renderable.Renderable{Shape: s, Material: m}
+	// scene.Renderables = append(scene.Renderables, r)
 
-	// // left wall
-	// vertices = [3]geometry.Vector{
-	// 	geometry.Vector{X: -2.5, Y: -2, Z: -2},
-	// 	geometry.Vector{X: -2.5, Y: -2, Z: -10},
-	// 	geometry.Vector{X: -2.5, Y: 2, Z: -10}}
-	// e = entity.Triangle{Vertices: vertices}
-	// m = material.Matte{Color: color.NRGBA{R: 231, G: 76, B: 60, A: 255}}
-	// renderable = entity.Renderable{Entity: e, Material: m}
-	// scene.Renderables = append(scene.Renderables, renderable)
-
-	// vertices = [3]geometry.Vector{
-	// 	geometry.Vector{X: -2.5, Y: -2, Z: -2},
-	// 	geometry.Vector{X: -2.5, Y: 2, Z: -10},
-	// 	geometry.Vector{X: -2.5, Y: 2, Z: -2}}
-	// e = entity.Triangle{Vertices: vertices}
-	// m = material.Matte{Color: color.NRGBA{R: 231, G: 76, B: 60, A: 255}}
-	// renderable = entity.Renderable{Entity: e, Material: m}
-	// scene.Renderables = append(scene.Renderables, renderable)
-
-	// // right wall
-	// vertices = [3]geometry.Vector{
-	// 	geometry.Vector{X: 2.5, Y: -2, Z: -2},
-	// 	geometry.Vector{X: 2.5, Y: -2, Z: -10},
-	// 	geometry.Vector{X: 2.5, Y: 2, Z: -10}}
-	// e = entity.Triangle{Vertices: vertices}
-	// m = material.Matte{Color: color.NRGBA{R: 5, G: 50, B: 255, A: 255}}
-	// renderable = entity.Renderable{Entity: e, Material: m}
-	// scene.Renderables = append(scene.Renderables, renderable)
-
-	// vertices = [3]geometry.Vector{
-	// 	geometry.Vector{X: 2.5, Y: -2, Z: -2},
-	// 	geometry.Vector{X: 2.5, Y: 2, Z: -10},
-	// 	geometry.Vector{X: 2.5, Y: 2, Z: -2}}
-	// e = entity.Triangle{Vertices: vertices}
-	// m = material.Matte{Color: color.NRGBA{R: 5, G: 50, B: 255, A: 255}}
-	// renderable = entity.Renderable{Entity: e, Material: m}
-	// scene.Renderables = append(scene.Renderables, renderable)
-
-	// lights
-	center = geometry.Vector{X: 0, Y: 1.5, Z: -5}
-	radius = 0.1
-	e = entity.Sphere{Center: center, Radius: radius}
+	center = geometry.Vector{X: 0, Y: 9, Z: -15}
+	radius = 1
+	s = shape.Sphere{Center: center, Radius: radius}
 	m = material.Light{Color: color.NRGBA{R: 255, G: 255, B: 0, A: 255}}
-	renderable = entity.Renderable{Entity: e, Material: m}
-	scene.Renderables = append(scene.Renderables, renderable)
-
-	center = geometry.Vector{X: 1.75, Y: 2, Z: -6}
-	radius = 0.1
-	e = entity.Sphere{Center: center, Radius: radius}
-	m = material.Light{Color: color.NRGBA{R: 255, G: 255, B: 0, A: 255}}
-	renderable = entity.Renderable{Entity: e, Material: m}
-	scene.Renderables = append(scene.Renderables, renderable)
-
-	center = geometry.Vector{X: -1.75, Y: 2, Z: -5}
-	radius = 0.1
-	e = entity.Sphere{Center: center, Radius: radius}
-	m = material.Light{Color: color.NRGBA{R: 255, G: 255, B: 0, A: 255}}
-	renderable = entity.Renderable{Entity: e, Material: m}
-	scene.Renderables = append(scene.Renderables, renderable)
+	r = renderable.Renderable{Shape: s, Material: m}
+	scene.Renderables = append(scene.Renderables, r)
 
 	for _, r := range scene.Renderables {
 		if _, ok := r.Material.(material.Light); ok {

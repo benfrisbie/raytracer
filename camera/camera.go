@@ -7,8 +7,9 @@ import (
 	"math/rand"
 	"sync"
 
-	"github.com/benfrisbie/raytracer/entity"
 	"github.com/benfrisbie/raytracer/geometry"
+	"github.com/benfrisbie/raytracer/geometry/renderable"
+	"github.com/benfrisbie/raytracer/geometry/shape"
 	"github.com/benfrisbie/raytracer/material"
 	"github.com/benfrisbie/raytracer/scene"
 	"github.com/cheggaaa/pb"
@@ -85,7 +86,7 @@ func (c Camera) calculatePixel(x int, y int, wg *sync.WaitGroup, progressBar *pb
 }
 
 func (c Camera) shootRay(ray geometry.Ray) color.NRGBA {
-	closest := entity.ClosestCollision(ray, c.scene.GetRenderables())
+	closest := renderable.ClosestCollision(ray, c.scene.GetRenderables())
 	if closest != nil {
 		// if closest.Entity.GetMaterial().Reflective {
 		// 	// shoot a ray in the reflected direction
@@ -99,8 +100,8 @@ func (c Camera) shootRay(ray geometry.Ray) color.NRGBA {
 			var totalDiffuse float64 = 0
 			for _, light := range c.scene.GetLights() {
 				// TODO: all lights are being treated as point lights right now
-				rayToLight := geometry.Ray{Origin: closest.Location, Direction: closest.Location.VectorTo(light.Entity.(entity.Sphere).Center)}.OffsetOrigin()
-				if !entity.CollisionCloserThan(rayToLight, c.scene.GetRenderablesNoLights(), rayToLight.Direction.Length()) {
+				rayToLight := geometry.Ray{Origin: closest.Location, Direction: closest.Location.VectorTo(light.Shape.(shape.Sphere).Center)}.OffsetOrigin()
+				if !renderable.CollisionCloserThan(rayToLight, c.scene.GetRenderablesNoLights(), rayToLight.Direction.Length()) {
 					totalDiffuse += math.Abs(rayToLight.Direction.Dot(closest.Normal))
 				}
 			}
