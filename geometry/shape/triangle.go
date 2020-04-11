@@ -2,6 +2,8 @@ package shape
 
 import (
 	"fmt"
+	"math"
+	"math/rand"
 
 	"github.com/benfrisbie/raytracer/geometry"
 )
@@ -13,6 +15,7 @@ type Triangle struct {
 	Vertices [3]geometry.Vector
 
 	normal *geometry.Vector
+	area   *float64
 }
 
 func (triangle Triangle) String() string {
@@ -48,14 +51,40 @@ func (triangle Triangle) CheckForCollision(ray geometry.Ray) (Shape, float64) {
 	return nil, 0
 }
 
-func (t Triangle) NormalAtLocation(loc geometry.Vector) geometry.Vector {
+func (triangle Triangle) NormalAtLocation(loc geometry.Vector) geometry.Vector {
 	// Normal is the same for every location on the triangle. calculate and cache for future calls
-	if t.normal == nil {
+	if triangle.normal == nil {
 		// Normal is the cross product of two of the edges
-		edge1 := t.Vertices[0].VectorTo(t.Vertices[1])
-		edge2 := t.Vertices[0].VectorTo(t.Vertices[2])
+		edge1 := triangle.Vertices[0].VectorTo(triangle.Vertices[1])
+		edge2 := triangle.Vertices[0].VectorTo(triangle.Vertices[2])
 		n := edge1.Cross(edge2)
-		t.normal = &n
+		triangle.normal = &n
 	}
-	return *t.normal
+	return *triangle.normal
+}
+
+func (triangle Triangle) RandomLocationOn() geometry.Vector {
+	var a, b float64
+	for {
+		a = rand.Float64()
+		b = rand.Float64()
+		if a+b <= 1 {
+			break
+		}
+	}
+	return triangle.Vertices[0].Add(triangle.Vertices[1].Scale(a)).Add(triangle.Vertices[2].Scale(b))
+}
+
+// Area calculates the area of the triangle
+func (triangle Triangle) Area() float64 {
+	// https://en.wikipedia.org/wiki/Heron%27s_formula
+	if triangle.area == nil {
+		a := triangle.Vertices[0].VectorTo(triangle.Vertices[1]).Length()
+		b := triangle.Vertices[1].VectorTo(triangle.Vertices[2]).Length()
+		c := triangle.Vertices[2].VectorTo(triangle.Vertices[0]).Length()
+		s := (a + b + c) / 2
+		area := math.Sqrt(s * (s - a) * (s - b) * (s - c))
+		triangle.area = &area
+	}
+	return *triangle.area
 }

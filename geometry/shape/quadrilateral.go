@@ -3,6 +3,7 @@ package shape
 import (
 	"fmt"
 	"math"
+	"math/rand"
 
 	"github.com/benfrisbie/raytracer/geometry"
 )
@@ -14,29 +15,29 @@ type Quadrilateral struct {
 }
 
 func NewQuadrilateral(vertices [4]geometry.Vector) Quadrilateral {
-	rect := Quadrilateral{Vertices: vertices}
-	rect.triangles = [2]Triangle{
+	quad := Quadrilateral{Vertices: vertices}
+	quad.triangles = [2]Triangle{
 		Triangle{Vertices: [3]geometry.Vector{
-			rect.Vertices[0],
-			rect.Vertices[1],
-			rect.Vertices[2]}},
+			quad.Vertices[0],
+			quad.Vertices[1],
+			quad.Vertices[2]}},
 		Triangle{Vertices: [3]geometry.Vector{
-			rect.Vertices[0],
-			rect.Vertices[2],
-			rect.Vertices[3]}}}
+			quad.Vertices[0],
+			quad.Vertices[2],
+			quad.Vertices[3]}}}
 
-	return rect
+	return quad
 }
 
-func (rect Quadrilateral) String() string {
-	return fmt.Sprintf("Quadrilateral(%v, %v, %v, %v)", rect.Vertices[0], rect.Vertices[1], rect.Vertices[2], rect.Vertices[3])
+func (quad Quadrilateral) String() string {
+	return fmt.Sprintf("Quadrilateral(%v, %v, %v, %v)", quad.Vertices[0], quad.Vertices[1], quad.Vertices[2], quad.Vertices[3])
 }
 
-func (rect Quadrilateral) CheckForCollision(ray geometry.Ray) (Shape, float64) {
+func (quad Quadrilateral) CheckForCollision(ray geometry.Ray) (Shape, float64) {
 	var tMin float64 = math.MaxFloat64
 	var shapeMin Shape = nil
 
-	for _, triangle := range rect.triangles {
+	for _, triangle := range quad.triangles {
 		s, t := triangle.CheckForCollision(ray)
 		if s != nil && (shapeMin == nil || t < tMin) {
 			tMin = t
@@ -44,4 +45,13 @@ func (rect Quadrilateral) CheckForCollision(ray geometry.Ray) (Shape, float64) {
 		}
 	}
 	return shapeMin, tMin
+}
+
+func (quad Quadrilateral) RandomLocationOn() geometry.Vector {
+	// Choose a triangle based on area
+	area := quad.triangles[0].Area() + quad.triangles[1].Area()
+	if rand.Float64()*area < quad.triangles[0].Area() {
+		return quad.triangles[0].RandomLocationOn()
+	}
+	return quad.triangles[1].RandomLocationOn()
 }

@@ -3,6 +3,7 @@ package shape
 import (
 	"fmt"
 	"math"
+	"math/rand"
 
 	"github.com/benfrisbie/raytracer/geometry"
 )
@@ -44,4 +45,11 @@ func (sphere Sphere) CheckForCollision(ray geometry.Ray) (Shape, float64) {
 
 func (s Sphere) NormalAtLocation(loc geometry.Vector) geometry.Vector {
 	return s.Center.VectorTo(loc).Normalize()
+}
+
+func (s Sphere) RandomLocationOn() geometry.Vector {
+	x := rand.NormFloat64()
+	y := rand.NormFloat64()
+	z := rand.NormFloat64()
+	return geometry.Vector{X: x, Y: y, Z: z}.Normalize().Scale(s.Radius)
 }
